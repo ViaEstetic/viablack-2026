@@ -285,11 +285,9 @@ dialog.painel[open]{display:flex;flex-direction:column;animation:sobe .28s ease}
   .filtros{margin-left:0;margin-right:0;padding-left:0;padding-right:0;flex-wrap:wrap}
   .final{padding:100px 0}
 }
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*:before,*:after{animation:none!important;transition:none!important}
-  .revelar{opacity:1;transform:none}
-}
+/* A animação roda sempre, mesmo com "reduzir movimento" ligado no sistema
+   (Windows com animações desligadas, iPhone/Android com movimento reduzido):
+   a abertura e as entradas fazem parte da campanha. */
 </style>
 </head>
 <body>
@@ -833,8 +831,8 @@ $("hero-prazo").innerHTML =
 /* ---------- Abertura ---------- */
 (function abertura() {
   const el = $("abertura");
-  const semMovimento = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (semMovimento || FIM - Date.now() <= 0) return;
+  // Roda mesmo com prefers-reduced-motion: a animação é forçada de propósito.
+  if (FIM - Date.now() <= 0) return;
 
   const [seg, hora] = montaAnel($("anel-abertura"), "grad-abertura");
   const elTempo = $("abertura-tempo");
