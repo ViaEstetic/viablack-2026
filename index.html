@@ -1,0 +1,925 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ViaBlack 2026 | Viaestetic</title>
+<meta name="description" content="ViaBlack 2026: seleção especial Viaestetic por tempo limitado. Monte sua seleção e fale com o seu consultor pelo WhatsApp.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="img/simbolo.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="img/logo-viaestetic.webp">
+<style>
+/* Marca Viaestetic no escuro: preto do tema escuro do portal, azul-marinho da
+   marca nos brilhos e o degradê do símbolo (magenta → violeta → azul) como
+   único acento. */
+:root{
+  --preto:#000;
+  --fundo:#04060a;
+  --sup:#0b0e14;
+  --sup-2:#11151d;
+  --sup-3:#181d27;
+  --borda:#ffffff17;
+  --borda-forte:#ffffff2e;
+  --texto:#f2f4f7;
+  --apagado:#9aa6b6;
+  --marinho:#06294c;
+  --grad:linear-gradient(90deg,#d151a9 0%,#8f7abe 35%,#6187c7 65%,#098ed1 100%);
+  --tinta-grad:#04060a;
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono","SF Mono",Menlo,Consolas,monospace;
+  --margem:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html.travado{overflow:hidden}
+body{margin:0;background:var(--fundo);color:var(--texto);font:16px/1.55 var(--sans);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
+input{font:inherit;color:inherit}
+a,button,input{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.wrap{max-width:1180px;margin:0 auto;padding-left:var(--margem);padding-right:var(--margem)}
+svg.i{width:19px;height:19px;flex:none;fill:currentColor}
+
+.sobrelinha{font:600 11px/1.4 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--apagado)}
+.sobrelinha b,.grad{font-weight:600;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ---------- Botões ---------- */
+.botao{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 22px;border-radius:999px;font-weight:700;font-size:15px;line-height:1;white-space:nowrap;transition:transform .15s ease,filter .15s ease,background .15s ease,border-color .15s ease}
+.botao:active{transform:scale(.97)}
+.botao.principal{background:var(--grad);color:var(--tinta-grad)}
+.botao.principal:hover{filter:brightness(1.12)}
+.botao.contorno{border:1px solid var(--borda-forte);color:var(--texto)}
+.botao.contorno:hover{border-color:#fff;background:#ffffff0d}
+.botao.largo{width:100%}
+.botao[aria-disabled="true"]{opacity:.4;pointer-events:none}
+
+/* ---------- Abertura ---------- */
+.abertura{position:fixed;inset:0;z-index:50;background:var(--preto);display:grid;place-items:center;overflow:hidden;transition:opacity .7s ease,visibility 0s linear .7s}
+.abertura.saindo{opacity:0;visibility:hidden;pointer-events:none}
+.abertura-palco{position:relative;width:min(84vw,62vh,460px);aspect-ratio:1;transition:transform .9s cubic-bezier(.6,0,.2,1)}
+.abertura.saindo .abertura-palco{transform:scale(1.5)}
+.abertura-centro{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.abertura-rotulo{font:600 10px/1 var(--mono);letter-spacing:.28em;text-transform:uppercase;color:var(--apagado);opacity:0;animation:surge .5s .25s forwards}
+.abertura-tempo{font:500 clamp(22px,7.4vw,38px)/1 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:.02em;opacity:0;animation:surge .4s .35s forwards}
+.abertura-marca{position:absolute;left:0;right:0;bottom:max(9vh,36px);text-align:center;font-size:clamp(30px,9vw,54px);font-weight:800;letter-spacing:.42em;margin-right:-.42em;opacity:0;transition:opacity .6s ease,letter-spacing .9s cubic-bezier(.2,.7,.2,1),margin .9s cubic-bezier(.2,.7,.2,1)}
+.abertura-marca span{font-weight:300;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.abertura.revela .abertura-marca{opacity:1;letter-spacing:-.02em;margin-right:0}
+.abertura-pular{position:absolute;top:max(18px,env(safe-area-inset-top));right:18px;min-height:44px;padding:0 16px;border:1px solid var(--borda);border-radius:999px;font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--apagado)}
+.abertura-pular:hover{color:#fff;border-color:var(--borda-forte)}
+.abertura .anel circle{animation:ponto .45s both;animation-delay:calc(var(--i)*9ms)}
+@keyframes ponto{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes surge{to{opacity:1}}
+
+/* ---------- Anel de pontos (símbolo da marca como relógio) ---------- */
+.anel{display:block;width:100%;height:100%;overflow:visible}
+.anel circle{transform-box:fill-box;transform-origin:center;transition:opacity .45s ease}
+.anel circle.off{opacity:.11}
+.anel circle.pulso{animation:pulso .9s ease-out}
+@keyframes pulso{0%{transform:scale(1.9);opacity:1}100%{transform:scale(1)}}
+
+/* ---------- Topo ---------- */
+.topo{position:absolute;top:0;left:0;right:0;z-index:5}
+.topo .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.topo .wrap>a:first-child{display:inline-flex;align-items:center;min-height:44px}
+.topo img{height:38px;width:auto}
+.topo-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid var(--borda-forte);border-radius:999px;font-size:13px;font-weight:600}
+.topo-link svg.i{width:16px;height:16px}
+.topo-link:hover{border-color:#fff}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;padding:104px 0 56px;background:
+  radial-gradient(60% 50% at 88% 30%,#098ed126 0%,transparent 70%),
+  radial-gradient(55% 45% at 6% 78%,#d151a91f 0%,transparent 70%),
+  radial-gradient(90% 70% at 50% 0%,#06294c8c 0%,transparent 75%),
+  var(--preto);overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background-image:radial-gradient(#ffffff1c 1px,transparent 1.4px);background-size:26px 26px;-webkit-mask-image:radial-gradient(75% 65% at 50% 40%,#000 0%,transparent 100%);mask-image:radial-gradient(75% 65% at 50% 40%,#000 0%,transparent 100%);pointer-events:none}
+.hero-grade{position:relative;display:grid;gap:26px}
+.hero h1{font-size:clamp(54px,16.5vw,128px);line-height:.9;letter-spacing:-.045em;font-weight:800;margin:14px 0 16px}
+.hero h1 span{font-weight:300;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.04em}
+.hero-texto{color:#c6cfdb;font-size:16px;max-width:520px}
+.hero-texto strong{color:#fff;font-weight:600}
+
+.relogio{position:relative;width:min(100%,340px);aspect-ratio:1;margin:0 auto}
+.relogio-centro{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px}
+.relogio-rotulo{font:600 10px/1 var(--mono);letter-spacing:.26em;text-transform:uppercase;color:var(--apagado);margin-bottom:6px}
+.relogio-dias{font-size:clamp(46px,15vw,64px);font-weight:800;line-height:.9;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.relogio-dias small{display:block;font:600 11px/1 var(--mono);letter-spacing:.26em;text-transform:uppercase;color:var(--apagado);margin-top:8px}
+.relogio-hms{font:500 clamp(21px,6.4vw,27px)/1 var(--mono);font-variant-numeric:tabular-nums;margin-top:10px}
+.relogio-hms i{font-style:normal;color:var(--apagado);animation:pisca 1s steps(1) infinite}
+@keyframes pisca{50%{opacity:.25}}
+
+.hero-acoes{display:grid;gap:10px}
+.hero-prazo{font:500 12px/1.5 var(--mono);color:var(--apagado);letter-spacing:.04em;margin-top:16px}
+.hero-prazo b{color:var(--texto);font-weight:600}
+
+/* ---------- Faixa de confiança ---------- */
+.faixa{border-top:1px solid var(--borda);border-bottom:1px solid var(--borda);background:var(--sup)}
+.faixa ul{list-style:none;margin:0 auto;padding-top:18px;padding-bottom:18px;display:grid;gap:10px}
+.faixa li{display:flex;align-items:center;gap:12px;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#c6cfdb}
+.faixa li:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--grad);flex:none}
+
+/* ---------- Seleção ---------- */
+.secao{padding-top:56px;padding-bottom:56px}
+.secao h2{font-size:clamp(28px,7.4vw,44px);line-height:1.05;letter-spacing:-.035em;font-weight:700;margin:10px 0 10px}
+.secao-sub{color:var(--apagado);max-width:580px;font-size:15px}
+
+.busca{position:relative;margin-top:26px}
+.busca input{width:100%;min-height:52px;padding:0 16px 0 46px;background:var(--sup);border:1px solid var(--borda-forte);border-radius:14px;font-size:16px}
+.busca input::placeholder{color:var(--apagado)}
+.busca input:focus{outline:none;border-color:#fff}
+.busca svg{position:absolute;left:16px;top:50%;width:18px;height:18px;transform:translateY(-50%);fill:none;stroke:var(--apagado);stroke-width:2;stroke-linecap:round}
+
+.filtros{display:flex;gap:8px;margin:14px calc(var(--margem)*-1) 6px;padding:2px var(--margem);overflow-x:auto;scrollbar-width:none}
+.filtros::-webkit-scrollbar{display:none}
+.filtro{flex:none;min-height:44px;padding:0 16px;border:1px solid var(--borda-forte);border-radius:999px;font-size:13px;font-weight:600;color:#c6cfdb;transition:background .15s,color .15s,border-color .15s}
+.filtro:hover{border-color:#fff;color:#fff}
+.filtro[aria-pressed="true"]{background:#fff;border-color:#fff;color:#000}
+.contagem{font:500 12px/1 var(--mono);color:var(--apagado);letter-spacing:.04em;margin:14px 0 14px}
+
+.grade{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cartao{position:relative;display:flex;flex-direction:column;background:var(--sup);border:1px solid var(--borda);border-radius:16px;overflow:hidden;transition:border-color .2s,transform .2s}
+.cartao.na-selecao{border-color:#8f7abe99}
+.cartao-foto{position:relative;aspect-ratio:1;background:var(--sup-2);overflow:hidden}
+.cartao-foto img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.cartao-selo{position:absolute;left:8px;bottom:8px;padding:5px 8px;border-radius:6px;background:#000000b3;font:600 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#dfe5ee;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.cartao-corpo{display:flex;flex-direction:column;flex:1;padding:12px 12px 14px;gap:6px}
+.cartao-marca{font:600 9.5px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--apagado)}
+.cartao-nome{font-size:14px;line-height:1.3;font-weight:600;overflow-wrap:anywhere}
+.cartao-acao{margin-top:auto;padding-top:10px}
+.cartao .botao{min-height:44px;padding:0 10px;font-size:13px;width:100%;gap:6px}
+.cartao .botao svg.i{width:15px;height:15px}
+
+.passo{display:flex;align-items:center;justify-content:space-between;min-height:44px;border-radius:999px;background:var(--grad);color:var(--tinta-grad);font-weight:700}
+.passo button{width:44px;height:44px;display:grid;place-items:center;font-size:20px;font-weight:700;border-radius:50%}
+.passo button:hover{background:#0000001f}
+.passo output{font-variant-numeric:tabular-nums;font-size:15px}
+
+.mais{display:flex;justify-content:center;margin-top:22px}
+.vazio{grid-column:1/-1;padding:40px 0;text-align:center;color:var(--apagado)}
+
+/* ---------- Como funciona ---------- */
+.passos{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:12px;counter-reset:p}
+.passos li{counter-increment:p;position:relative;padding:20px 20px 20px 66px;background:var(--sup);border:1px solid var(--borda);border-radius:16px}
+.passos li:before{content:"0" counter(p);position:absolute;left:20px;top:20px;font:600 15px/1.5 var(--mono);background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.passos h3{font-size:16px;font-weight:600;margin-bottom:4px}
+.passos p{font-size:14px;color:var(--apagado)}
+
+/* ---------- Chamada final ---------- */
+.final{position:relative;padding:64px 0;text-align:center;border-top:1px solid var(--borda);background:radial-gradient(70% 90% at 50% 100%,#06294cb3 0%,transparent 75%),var(--preto);overflow:hidden}
+.final h2{font-size:clamp(28px,8vw,48px);line-height:1.05;letter-spacing:-.035em;font-weight:700;margin:12px auto 12px;max-width:640px}
+.final p{color:#c6cfdb;max-width:520px;margin:0 auto 26px;font-size:15px}
+.final .tempo{font-family:var(--mono);font-variant-numeric:tabular-nums;color:#fff;white-space:nowrap}
+
+.rodape{padding:26px 0 calc(100px + env(safe-area-inset-bottom));color:var(--apagado);font-size:12px;line-height:1.6;border-top:1px solid var(--borda)}
+.rodape .wrap{display:grid;gap:8px}
+.rodape strong{color:#c6cfdb;font-weight:600;letter-spacing:.08em}
+
+/* ---------- Barra fixa ---------- */
+.barra{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px var(--margem) calc(10px + env(safe-area-inset-bottom));background:#06080ce6;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--borda);transform:translateY(110%);transition:transform .35s ease}
+.barra.visivel{transform:none}
+.barra-dentro{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.barra-rotulo{display:block;font:600 9px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--apagado);margin-bottom:5px}
+.barra-tempo{font:600 16px/1 var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.barra .botao{min-height:46px;padding:0 16px;font-size:14px;gap:8px}
+.bolha{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--tinta-grad);color:#fff;font:700 12px/1 var(--sans);font-variant-numeric:tabular-nums}
+.bolha:empty{display:none}
+
+/* ---------- Painéis (seleção e atendimento) ---------- */
+dialog{border:0;padding:0;color:var(--texto);background:var(--sup);max-width:100%;max-height:100%}
+dialog::backdrop{background:#000000b8;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+dialog.painel{width:100%;max-height:90dvh;margin:auto 0 0;border-radius:22px 22px 0 0;border-top:1px solid var(--borda-forte);overflow:hidden}
+dialog.painel[open]{display:flex;flex-direction:column;animation:sobe .28s ease}
+@keyframes sobe{from{transform:translateY(24px);opacity:0}}
+.painel-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px var(--margem) 14px}
+.painel-topo h2{font-size:22px;line-height:1.15;letter-spacing:-.02em;font-weight:700;margin-top:6px}
+.fechar{flex:none;width:44px;height:44px;margin:-6px -8px 0 0;border-radius:50%;display:grid;place-items:center;color:var(--apagado)}
+.fechar:hover{background:#ffffff12;color:#fff}
+.fechar svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none}
+.painel-corpo{flex:1;min-height:0;overflow-y:auto;padding:0 var(--margem) 8px;overscroll-behavior:contain}
+.painel-pe{padding:14px var(--margem) calc(16px + env(safe-area-inset-bottom));border-top:1px solid var(--borda);background:var(--sup)}
+.painel-nota{font-size:11.5px;line-height:1.5;color:var(--apagado);margin-top:10px;text-align:center}
+
+.item{display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;padding:14px 0;border-bottom:1px solid var(--borda)}
+.item:last-child{border-bottom:0}
+.item img{width:56px;height:56px;border-radius:10px;object-fit:cover;background:var(--sup-2)}
+.item-nome{font-size:14px;font-weight:600;line-height:1.3;overflow-wrap:anywhere}
+.item-linha{font:600 9.5px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--apagado);margin-top:3px}
+.item-acoes{display:flex;align-items:center;gap:10px;margin-top:10px}
+.item .passo{width:128px;background:var(--sup-3);color:var(--texto);border:1px solid var(--borda)}
+.item .passo button:hover{background:#ffffff14}
+.tirar{min-height:44px;padding:0 8px;font-size:13px;color:var(--apagado);text-decoration:underline;text-underline-offset:3px}
+.tirar:hover{color:#fff}
+.selecao-vazia{padding:34px 0 30px;text-align:center;color:var(--apagado);font-size:15px}
+
+.rota-texto{color:#c6cfdb;font-size:15px;margin-bottom:16px}
+.opcoes{display:grid;gap:10px;padding-bottom:20px}
+.opcao{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:64px;padding:12px 18px;text-align:left;background:var(--sup-2);border:1px solid var(--borda-forte);border-radius:14px;transition:border-color .15s,background .15s}
+.opcao:hover{border-color:#fff;background:var(--sup-3)}
+.opcao b{display:block;font-size:16px;font-weight:600}
+.opcao span{display:block;font-size:13px;color:var(--apagado);margin-top:2px}
+.opcao svg{flex:none;width:18px;height:18px;stroke:var(--apagado);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.vendedores{list-style:none;margin:12px 0 0;padding:0 0 16px;display:grid;gap:6px}
+.vendedor{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:8px 14px;text-align:left;border-radius:12px;border:1px solid transparent;font-size:15px;font-weight:600}
+.vendedor:hover{background:var(--sup-2);border-color:var(--borda-forte)}
+.vendedor small{display:block;font-size:12px;font-weight:400;color:var(--apagado);margin-top:1px}
+.vendedor.outro{font-weight:500;color:#c6cfdb}
+.avatar{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--grad);color:var(--tinta-grad);font:700 12px/1 var(--sans)}
+.vendedor.outro .avatar{background:var(--sup-3);color:var(--apagado)}
+.destino{display:flex;align-items:center;gap:14px;padding:16px;background:var(--sup-2);border:1px solid var(--borda);border-radius:14px;margin-bottom:14px}
+.destino .avatar{width:46px;height:46px;font-size:15px}
+.destino small{display:block;font:600 9.5px/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--apagado)}
+.destino b{display:block;font-size:18px;font-weight:700;margin-top:2px}
+.resumo{font-size:14px;color:#c6cfdb;margin-bottom:6px}
+.voltar{display:inline-flex;align-items:center;min-height:44px;font-size:13px;color:var(--apagado);text-decoration:underline;text-underline-offset:3px}
+.voltar:hover{color:#fff}
+
+/* ---------- Entrada ao rolar ---------- */
+.revelar{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.revelar.visto{opacity:1;transform:none}
+.encerrada .relogio-hms i{animation:none}
+
+/* ---------- Telas maiores ---------- */
+@media (hover:hover){
+  .cartao:hover{border-color:var(--borda-forte);transform:translateY(-3px)}
+  .cartao:hover .cartao-foto img{transform:scale(1.04)}
+}
+@media (min-width:600px){
+  :root{--margem:28px}
+  .hero-acoes{display:flex;flex-wrap:wrap}
+  .faixa ul{grid-template-columns:repeat(3,1fr);gap:20px}
+  .grade{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .cartao-corpo{padding:16px 16px 18px}
+  .cartao-nome{font-size:15px}
+  .cartao .botao{font-size:14px}
+  .passos{grid-template-columns:repeat(3,1fr)}
+  .passos li{padding:58px 22px 22px}
+  .rodape .wrap{grid-template-columns:auto 1fr;gap:24px;align-items:baseline}
+  .rodape span:last-child{text-align:right}
+}
+@media (min-width:720px){
+  dialog.painel{border:1px solid var(--borda-forte)}
+  dialog#selecao{width:440px;height:100dvh;max-height:100dvh;margin:0 0 0 auto;border-radius:0;border-width:0 0 0 1px}
+  dialog#selecao[open]{animation:entra .28s ease}
+  dialog#rota{width:480px;max-height:86dvh;margin:auto;border-radius:22px}
+  @keyframes entra{from{transform:translateX(24px);opacity:0}}
+}
+@media (min-width:940px){
+  :root{--margem:36px}
+  .topo .wrap{height:88px}
+  .topo img{height:46px}
+  .hero{padding:150px 0 90px}
+  .hero-grade{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);grid-template-areas:"texto relogio" "acoes relogio";column-gap:40px;align-items:center}
+  .hero-bloco{grid-area:texto;align-self:end}
+  .hero-acoes-bloco{grid-area:acoes;align-self:start}
+  .relogio{grid-area:relogio;width:min(100%,480px)}
+  .hero-texto{font-size:18px}
+  .relogio-dias{font-size:92px}
+  .relogio-hms{font-size:34px}
+  .secao{padding-top:88px;padding-bottom:88px}
+  .busca{max-width:520px}
+  .grade{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+  .filtros{margin-left:0;margin-right:0;padding-left:0;padding-right:0;flex-wrap:wrap}
+  .final{padding:100px 0}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*:before,*:after{animation:none!important;transition:none!important}
+  .revelar{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="zap" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></symbol>
+  <symbol id="mais" viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></symbol>
+</svg>
+
+<!-- Abertura: o símbolo da marca vira relógio e o tempo escorre até o prazo real -->
+<div class="abertura" id="abertura" hidden>
+  <button class="abertura-pular" id="pular" type="button">Pular</button>
+  <div class="abertura-palco">
+    <svg class="anel" id="anel-abertura" viewBox="0 0 600 600" aria-hidden="true"></svg>
+    <div class="abertura-centro" aria-hidden="true">
+      <span class="abertura-rotulo">O tempo está correndo</span>
+      <span class="abertura-tempo" id="abertura-tempo">00:00:00:00</span>
+    </div>
+  </div>
+  <div class="abertura-marca" aria-hidden="true">VIA<span>BLACK</span></div>
+</div>
+
+<header class="topo">
+  <div class="wrap">
+    <a href="#inicio" aria-label="Viaestetic, início"><img src="img/logo-viaestetic.webp" alt="Viaestetic" width="600" height="213"></a>
+    <button class="topo-link" type="button" data-abre="rota"><svg class="i" aria-hidden="true"><use href="#zap"/></svg>Consultor</button>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero">
+    <div class="wrap hero-grade">
+      <div class="hero-bloco">
+        <p class="sobrelinha">Edição especial <b>Viaestetic</b> · 2026</p>
+        <h1>VIA<span>BLACK</span></h1>
+        <p class="hero-texto" id="hero-texto">Marcas e tecnologias da estética avançada com <strong>condições por tempo limitado</strong>. Monte a sua seleção e receba a condição direto do seu consultor.</p>
+      </div>
+
+      <div class="relogio" role="timer" aria-label="Tempo restante da ViaBlack">
+        <svg class="anel" id="anel-hero" viewBox="0 0 600 600" aria-hidden="true"></svg>
+        <div class="relogio-centro">
+          <span class="relogio-rotulo" id="relogio-rotulo">Termina em</span>
+          <span class="relogio-dias" id="relogio-dias">--<small>dias</small></span>
+          <span class="relogio-hms" id="relogio-hms">--<i>:</i>--<i>:</i>--</span>
+        </div>
+        <span class="sr" id="relogio-sr"></span>
+      </div>
+
+      <div class="hero-acoes-bloco">
+        <div class="hero-acoes" id="hero-acoes">
+          <a class="botao principal" href="#selecao-produtos">Ver a seleção</a>
+          <button class="botao contorno" type="button" data-abre="rota"><svg class="i" aria-hidden="true"><use href="#zap"/></svg>Falar no WhatsApp</button>
+        </div>
+        <p class="hero-prazo" id="hero-prazo"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="faixa" aria-label="Sobre a Viaestetic">
+    <ul class="wrap">
+      <li>Desde 2015 no mercado</li>
+      <li>Parcerias homologadas com laboratórios</li>
+      <li>Origem, regularização e rastreabilidade</li>
+    </ul>
+  </section>
+
+  <section class="secao wrap" id="selecao-produtos">
+    <div class="revelar">
+      <p class="sobrelinha">Seleção <b>ViaBlack</b></p>
+      <h2>Monte a sua seleção.</h2>
+      <p class="secao-sub">Adicione os produtos que interessam. A condição ViaBlack de cada um chega pelo WhatsApp, com o seu consultor.</p>
+    </div>
+    <div class="busca">
+      <label class="sr" for="busca">Buscar produto ou marca</label>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg>
+      <input id="busca" type="search" placeholder="Buscar produto ou marca" autocomplete="off" enterkeyhint="search">
+    </div>
+    <div class="filtros" id="filtros" role="group" aria-label="Filtrar por categoria"></div>
+    <p class="contagem" id="contagem" aria-live="polite"></p>
+    <div class="grade" id="grade"></div>
+    <div class="mais" id="mais" hidden><button class="botao contorno" type="button" id="mostrar-mais">Mostrar mais</button></div>
+  </section>
+
+  <section class="secao wrap" style="padding-top:0">
+    <div class="revelar">
+      <p class="sobrelinha">Como <b>funciona</b></p>
+      <h2>Da seleção à proposta, em três passos.</h2>
+    </div>
+    <ol class="passos">
+      <li class="revelar"><h3>Monte a seleção</h3><p>Adicione os produtos e as quantidades que você quer consultar.</p></li>
+      <li class="revelar"><h3>Diga quem te atende</h3><p>Já é cliente? Escolha o seu vendedor. Ainda não é? Um consultor recebe você.</p></li>
+      <li class="revelar"><h3>Receba a condição</h3><p>A lista vai pronta para o WhatsApp e o consultor responde com a condição ViaBlack.</p></li>
+    </ol>
+  </section>
+
+  <section class="final">
+    <div class="wrap revelar">
+      <p class="sobrelinha">Atendimento <b>Viaestetic</b></p>
+      <h2 id="final-titulo">A ViaBlack termina em <span class="tempo" data-tempo>--</span></h2>
+      <p>Uma equipe com experiência de mercado para apoiar a sua compra, com informações sobre portfólio, disponibilidade e condições comerciais.</p>
+      <button class="botao principal" type="button" data-abre="rota"><svg class="i" aria-hidden="true"><use href="#zap"/></svg>Falar com um consultor</button>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="wrap">
+    <strong>VIAESTETIC · VIABLACK 2026</strong>
+    <span>Esta página não realiza vendas: a seleção gera um pedido de atendimento. Venda exclusiva para profissionais habilitados. Disponibilidade e condições comerciais informadas somente pelo consultor. Imagens ilustrativas quando indicado.</span>
+  </div>
+</footer>
+
+<div class="barra" id="barra">
+  <div class="barra-dentro">
+    <div>
+      <span class="barra-rotulo" id="barra-rotulo">Termina em</span>
+      <span class="barra-tempo" data-tempo>--</span>
+    </div>
+    <button class="botao principal" type="button" data-abre="selecao">Minha seleção<span class="bolha" id="bolha"></span></button>
+  </div>
+</div>
+<p class="sr" id="aviso" aria-live="polite"></p>
+
+<!-- Minha seleção -->
+<dialog class="painel" id="selecao" aria-labelledby="selecao-titulo">
+  <div class="painel-topo">
+    <div><p class="sobrelinha">ViaBlack <b>2026</b></p><h2 id="selecao-titulo">Minha seleção</h2></div>
+    <button class="fechar" type="button" data-fecha aria-label="Fechar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
+  </div>
+  <div class="painel-corpo" id="selecao-itens"></div>
+  <div class="painel-pe">
+    <button class="botao principal largo" type="button" id="selecao-pedir" data-abre="rota"><svg class="i" aria-hidden="true"><use href="#zap"/></svg>Pedir condição no WhatsApp</button>
+    <p class="painel-nota">Não é uma compra: o consultor confirma disponibilidade e passa a condição.</p>
+  </div>
+</dialog>
+
+<!-- Atendimento: cliente ou não, e com qual vendedor falar -->
+<dialog class="painel" id="rota" aria-labelledby="rota-titulo">
+  <div class="painel-topo">
+    <div><p class="sobrelinha">Atendimento <b>Viaestetic</b></p><h2 id="rota-titulo"></h2></div>
+    <button class="fechar" type="button" data-fecha aria-label="Fechar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
+  </div>
+  <div class="painel-corpo" id="rota-corpo"></div>
+  <div class="painel-pe" id="rota-pe" hidden></div>
+</dialog>
+
+<script src="config.js"></script>
+<script src="produtos.js"></script>
+<script>
+const CONFIG = window.VIABLACK;
+const CATEGORIAS = window.VIABLACK_CATEGORIAS;
+const PRODUTOS = window.VIABLACK_PRODUTOS.map((p, i) => ({ ...p, k: p.id ? "p" + p.id : "n" + i }));
+const POR_CHAVE = new Map(PRODUTOS.map((p) => [p.k, p]));
+const ROTULO_CAT = Object.fromEntries(CATEGORIAS.map((c) => [c.id, c.rotulo]));
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const semAcento = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const foto = (p) => (p.f ? `img/produtos/${p.f}.webp` : `img/cat-${p.c}.webp`);
+
+/* Guarda no aparelho (seleção e vendedor escolhido). Sem armazenamento, a
+   página funciona igual, só não lembra na próxima visita. */
+const guarda = {
+  le(chave) { try { return JSON.parse(localStorage.getItem("viablack2026:" + chave)); } catch { return null; } },
+  grava(chave, valor) { try { localStorage.setItem("viablack2026:" + chave, JSON.stringify(valor)); } catch { /* segue sem lembrar */ } },
+};
+
+/* ============================================================
+   SELEÇÃO (lista de interesse, sem preço)
+   ============================================================ */
+const selecao = new Map();
+Object.entries(guarda.le("selecao") || {}).forEach(([k, q]) => {
+  if (POR_CHAVE.has(k) && Number.isInteger(q) && q > 0) selecao.set(k, Math.min(q, 999));
+});
+const totalItens = () => [...selecao.values()].reduce((a, b) => a + b, 0);
+
+function acaoHTML(p) {
+  const q = selecao.get(p.k);
+  if (!q) return `<button class="botao contorno" type="button" data-soma="${p.k}" aria-label="Adicionar ${esc(p.n)} à seleção"><svg class="i" aria-hidden="true"><use href="#mais"/></svg>Adicionar</button>`;
+  return passoHTML(p, q);
+}
+function passoHTML(p, q) {
+  return `<div class="passo" role="group" aria-label="Quantidade de ${esc(p.n)}">
+    <button type="button" data-tira="${p.k}" aria-label="Diminuir">−</button>
+    <output>${q}</output>
+    <button type="button" data-soma="${p.k}" aria-label="Aumentar">+</button>
+  </div>`;
+}
+
+function mudaQuantidade(k, delta) {
+  const p = POR_CHAVE.get(k);
+  if (!p) return;
+  const q = Math.max(0, Math.min(999, (selecao.get(k) || 0) + delta));
+  if (q) selecao.set(k, q); else selecao.delete(k);
+  guarda.grava("selecao", Object.fromEntries(selecao));
+  // Atualiza só o cartão mexido, a barra e o painel.
+  document.querySelectorAll(`.cartao[data-k="${k}"]`).forEach((c) => {
+    c.classList.toggle("na-selecao", q > 0);
+    const acao = c.querySelector(".cartao-acao");
+    const foco = acao.contains(document.activeElement) ? (delta > 0 ? "soma" : "tira") : null;
+    acao.innerHTML = acaoHTML(p);
+    if (foco) (acao.querySelector(`[data-${foco}]`) || acao.querySelector("button")).focus();
+  });
+  desenhaBarra();
+  if ($("selecao").open) desenhaSelecao(k, delta);
+  $("aviso").textContent = q ? `${p.n}: ${q} na seleção.` : `${p.n} saiu da seleção.`;
+}
+
+function desenhaBarra() {
+  const n = totalItens();
+  $("bolha").textContent = n || "";
+  atualizaBarraVisivel();
+}
+
+function desenhaSelecao(kFoco, delta) {
+  const el = $("selecao-itens");
+  $("selecao-pedir").setAttribute("aria-disabled", String(!selecao.size));
+  if (!selecao.size) {
+    el.innerHTML = `<p class="selecao-vazia">Sua seleção está vazia.<br>Adicione produtos para pedir a condição.</p>`;
+    return;
+  }
+  el.innerHTML = [...selecao].map(([k, q]) => {
+    const p = POR_CHAVE.get(k);
+    return `<div class="item" data-k="${k}">
+      <img src="${foto(p)}" alt="" width="56" height="56" loading="lazy" decoding="async">
+      <div>
+        <p class="item-nome">${esc(p.n)}</p>
+        <p class="item-linha">${esc(p.l)} · ${esc(ROTULO_CAT[p.c])}</p>
+        <div class="item-acoes">${passoHTML(p, q)}<button class="tirar" type="button" data-remove="${k}">Remover</button></div>
+      </div>
+    </div>`;
+  }).join("");
+  if (kFoco) {
+    const alvo = el.querySelector(`.item[data-k="${kFoco}"] [data-${delta > 0 ? "soma" : "tira"}]`);
+    (alvo || $("selecao").querySelector("[data-fecha]")).focus();
+  }
+}
+
+/* ============================================================
+   VITRINE: busca, categorias e "mostrar mais"
+   ============================================================ */
+const POR_PAGINA = 24;
+let categoriaAtiva = "todos", termo = "", limite = POR_PAGINA;
+const elFiltros = $("filtros"), elGrade = $("grade");
+const INDICE = new Map(PRODUTOS.map((p) => [p.k, semAcento(`${p.n} ${p.l} ${ROTULO_CAT[p.c]}`)]));
+
+elFiltros.innerHTML = [{ id: "todos", rotulo: "Todos" }, ...CATEGORIAS]
+  .map((c) => `<button class="filtro" type="button" aria-pressed="${c.id === categoriaAtiva}" data-cat="${c.id}">${esc(c.rotulo)}</button>`).join("");
+
+function cartaoHTML(p) {
+  return `<article class="cartao${selecao.has(p.k) ? " na-selecao" : ""}" data-k="${p.k}">
+    <div class="cartao-foto">
+      <img src="${foto(p)}" alt="${esc(p.n)}" width="640" height="640" loading="lazy" decoding="async">
+      ${p.f ? "" : '<span class="cartao-selo">Imagem ilustrativa</span>'}
+    </div>
+    <div class="cartao-corpo">
+      <span class="cartao-marca">${esc(p.l)} · ${esc(ROTULO_CAT[p.c])}</span>
+      <h3 class="cartao-nome">${esc(p.n)}</h3>
+      <div class="cartao-acao">${acaoHTML(p)}</div>
+    </div>
+  </article>`;
+}
+function desenhaGrade() {
+  const palavras = semAcento(termo).split(/\s+/).filter(Boolean);
+  const lista = PRODUTOS.filter((p) =>
+    (categoriaAtiva === "todos" || p.c === categoriaAtiva) &&
+    palavras.every((w) => INDICE.get(p.k).includes(w)));
+  const visiveis = lista.slice(0, limite);
+  elGrade.innerHTML = visiveis.map(cartaoHTML).join("") ||
+    '<p class="vazio">Nenhum produto encontrado. Tente outro nome ou fale com um consultor.</p>';
+  $("contagem").textContent = `${lista.length} ${lista.length === 1 ? "produto" : "produtos"}`;
+  const resto = lista.length - visiveis.length;
+  $("mais").hidden = resto <= 0;
+  $("mostrar-mais").textContent = `Mostrar mais (${resto})`;
+}
+elFiltros.addEventListener("click", (e) => {
+  const botao = e.target.closest("[data-cat]");
+  if (!botao) return;
+  categoriaAtiva = botao.dataset.cat;
+  limite = POR_PAGINA;
+  // Só troca o estado: redesenhar a fileira voltaria a rolagem dela para o início.
+  elFiltros.querySelectorAll("[data-cat]").forEach((b) => b.setAttribute("aria-pressed", String(b === botao)));
+  desenhaGrade();
+});
+$("busca").addEventListener("input", (e) => { termo = e.target.value; limite = POR_PAGINA; desenhaGrade(); });
+$("mostrar-mais").addEventListener("click", () => {
+  const antes = elGrade.children.length;
+  limite += POR_PAGINA;
+  desenhaGrade();
+  elGrade.children[antes]?.querySelector("button")?.focus({ preventScroll: true });
+});
+
+/* ============================================================
+   ATENDIMENTO: já é cliente? com qual vendedor? → WhatsApp
+   ============================================================ */
+const VENDEDORES = (CONFIG.vendedores || []).filter((v) => v && v.nome)
+  .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+VENDEDORES.forEach((v, i) => { v.chave = String(i); });
+const NOVOS = (CONFIG.novosClientes || []).filter((v) => v && v.nome);
+const iniciais = (nome) => nome.split(/\s+/).filter(Boolean).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+// Nome + WhatsApp identificam o vendedor entre visitas (há nomes repetidos).
+const porMarca = (marca) => VENDEDORES.find((v) => `${v.nome}|${v.whatsapp}` === marca);
+
+/** Quem recebe cliente novo: sorteado uma vez por aparelho, depois sempre o mesmo. */
+function consultorDeNovos() {
+  if (!NOVOS.length) return null;
+  const lembrado = NOVOS.find((v) => v.nome === guarda.le("novo"));
+  if (lembrado) return lembrado;
+  const sorteado = NOVOS[Math.floor(Math.random() * NOVOS.length)];
+  guarda.grava("novo", sorteado.nome);
+  return sorteado;
+}
+
+function mensagem(rota) {
+  const linhas = ["Olá! Vim pela ViaBlack 2026."];
+  if (rota.cliente && rota.vendedor && !rota.naoLembra) linhas.push(`Já sou cliente Viaestetic e meu vendedor é ${rota.vendedor.nome}.`);
+  else if (rota.cliente) linhas.push("Já sou cliente Viaestetic, mas não lembro quem me atende.");
+  else linhas.push("Ainda não sou cliente Viaestetic.");
+  linhas.push("");
+  if (selecao.size) {
+    linhas.push("Gostaria da condição ViaBlack para:");
+    selecao.forEach((q, k) => {
+      const p = POR_CHAVE.get(k);
+      linhas.push(`• ${q}× ${p.n}${p.id ? ` (ref. VIA-${p.id})` : ""}`);
+    });
+  } else {
+    linhas.push("Gostaria de conhecer as condições da ViaBlack.");
+  }
+  linhas.push("", `Origem: ${CONFIG.origem}.`);
+  return linhas.join("\n");
+}
+function linkZap(rota) {
+  const numero = String(rota.vendedor?.whatsapp || "").replace(/\D/g, "");
+  return `https://wa.me/${numero}?text=${encodeURIComponent(mensagem(rota))}`;
+}
+
+const elRota = $("rota"), elRotaCorpo = $("rota-corpo"), elRotaPe = $("rota-pe"), elRotaTitulo = $("rota-titulo");
+const SETA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
+
+function passoPergunta() {
+  elRotaTitulo.textContent = "Você já é cliente Viaestetic?";
+  elRotaPe.hidden = true;
+  elRotaCorpo.innerHTML = `
+    <p class="rota-texto">Assim a sua mensagem chega para a pessoa certa.</p>
+    <div class="opcoes">
+      <button class="opcao" type="button" data-rota="cliente"><span><b>Já sou cliente</b><span>Vou falar com o meu vendedor</span></span>${SETA}</button>
+      <button class="opcao" type="button" data-rota="novo"><span><b>Ainda não sou cliente</b><span>Quero ser atendido por um consultor</span></span>${SETA}</button>
+    </div>`;
+  elRotaCorpo.querySelector("button").focus();
+}
+
+function passoVendedor() {
+  elRotaTitulo.textContent = "Quem é o seu vendedor?";
+  elRotaPe.hidden = true;
+  elRotaCorpo.innerHTML = `
+    <div class="busca" style="margin-top:0">
+      <label class="sr" for="busca-vendedor">Buscar vendedor pelo nome</label>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg>
+      <input id="busca-vendedor" type="search" placeholder="Buscar pelo nome" autocomplete="off">
+    </div>
+    <ul class="vendedores" id="lista-vendedores"></ul>
+    <button class="voltar" type="button" data-rota="inicio">Voltar</button>`;
+  const lista = $("lista-vendedores");
+  const desenha = (t) => {
+    const palavras = semAcento(t).split(/\s+/).filter(Boolean);
+    const achados = VENDEDORES.filter((v) => palavras.every((w) => semAcento(`${v.nome} ${v.local || ""}`).includes(w)));
+    lista.innerHTML = achados.map((v) =>
+      `<li><button class="vendedor" type="button" data-vendedor="${v.chave}"><span class="avatar" aria-hidden="true">${esc(iniciais(v.nome))}</span><span>${esc(v.nome)}${v.local ? `<small>${esc(v.local)}</small>` : ""}</span></button></li>`).join("") +
+      `<li><button class="vendedor outro" type="button" data-rota="nao-lembro"><span class="avatar" aria-hidden="true">?</span>${achados.length ? "Não lembro quem me atende" : "Não achei o meu vendedor"}</button></li>`;
+  };
+  desenha("");
+  const campo = $("busca-vendedor");
+  campo.addEventListener("input", () => desenha(campo.value));
+  // No celular, focar o campo abriria o teclado por cima da lista.
+  if (matchMedia("(hover:hover)").matches) campo.focus(); else lista.querySelector("button").focus();
+}
+
+function passoDestino(rota) {
+  const comVendedor = rota.cliente && !rota.naoLembra && rota.vendedor;
+  guarda.grava("rota", { cliente: rota.cliente, naoLembra: !!rota.naoLembra, vendedor: comVendedor ? `${rota.vendedor.nome}|${rota.vendedor.whatsapp}` : null });
+  const v = rota.vendedor;
+  const n = totalItens();
+  elRotaTitulo.textContent = "Tudo pronto.";
+  // Só o cliente vê o nome (o do vendedor que ele mesmo escolheu). Quem não é
+  // cliente não fica sabendo qual consultor vai receber a mensagem.
+  elRotaCorpo.innerHTML = `
+    ${comVendedor
+      ? `<div class="destino"><span class="avatar" aria-hidden="true">${esc(iniciais(v.nome))}</span><div><small>Seu vendedor</small><b>${esc(v.nome)}</b></div></div>`
+      : `<p class="rota-texto">Um consultor Viaestetic vai receber a sua mensagem e continuar o atendimento.</p>`}
+    <p class="resumo">${n
+      ? `Sua seleção vai na mensagem: <strong>${n} ${n === 1 ? "item" : "itens"}</strong>, ${selecao.size} ${selecao.size === 1 ? "produto" : "produtos"}.`
+      : "Você ainda não adicionou produtos. Dá para falar com o consultor mesmo assim."}</p>
+    <button class="voltar" type="button" data-rota="inicio">Trocar atendimento</button>`;
+  elRotaPe.hidden = false;
+  elRotaPe.innerHTML = `
+    <a class="botao principal largo" id="abrir-zap" href="${esc(linkZap(rota))}" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#zap"/></svg>Abrir o WhatsApp</a>
+    <p class="painel-nota">Você só envia a mensagem se quiser: ela abre pronta no WhatsApp.</p>`;
+  $("abrir-zap").focus();
+}
+
+function abreRota() {
+  if ($("selecao").open) $("selecao").close();
+  abre(elRota);
+  // Quem já respondeu antes cai direto no último passo (e pode trocar).
+  const lembrada = guarda.le("rota");
+  if (lembrada?.cliente && !lembrada.naoLembra && porMarca(lembrada.vendedor)) return passoDestino({ cliente: true, vendedor: porMarca(lembrada.vendedor) });
+  if (lembrada?.cliente && lembrada.naoLembra) return passoDestino({ cliente: true, naoLembra: true, vendedor: consultorDeNovos() });
+  if (lembrada && lembrada.cliente === false) return passoDestino({ cliente: false, vendedor: consultorDeNovos() });
+  passoPergunta();
+}
+
+elRota.addEventListener("click", (e) => {
+  const passo = e.target.closest("[data-rota]")?.dataset.rota;
+  const chave = e.target.closest("[data-vendedor]")?.dataset.vendedor;
+  if (chave) return passoDestino({ cliente: true, vendedor: VENDEDORES.find((v) => v.chave === chave) });
+  if (passo === "inicio") return passoPergunta();
+  if (passo === "novo") return passoDestino({ cliente: false, vendedor: consultorDeNovos() });
+  if (passo === "nao-lembro") return passoDestino({ cliente: true, naoLembra: true, vendedor: consultorDeNovos() });
+  // Sem lista de vendedores configurada, o cliente também vai para o consultor geral.
+  if (passo === "cliente") return VENDEDORES.length ? passoVendedor() : passoDestino({ cliente: true, naoLembra: true, vendedor: consultorDeNovos() });
+});
+
+/* ---------- Painéis ---------- */
+function abre(dialogo) {
+  if (dialogo.open) return;
+  dialogo.showModal();
+  document.documentElement.classList.add("travado");
+}
+document.querySelectorAll("dialog").forEach((d) => {
+  d.addEventListener("close", () => {
+    if (!document.querySelector("dialog[open]")) document.documentElement.classList.remove("travado");
+  });
+  // Toque fora do painel fecha.
+  d.addEventListener("click", (e) => { if (e.target === d) d.close(); });
+});
+
+document.addEventListener("click", (e) => {
+  const alvo = e.target.closest("[data-soma],[data-tira],[data-remove],[data-abre],[data-fecha]");
+  if (!alvo) return;
+  const d = alvo.dataset;
+  if (d.soma) mudaQuantidade(d.soma, 1);
+  else if (d.tira) mudaQuantidade(d.tira, -1);
+  else if (d.remove) mudaQuantidade(d.remove, -(selecao.get(d.remove) || 0));
+  else if (d.abre === "selecao") { desenhaSelecao(); abre($("selecao")); }
+  else if (d.abre === "rota") { if (alvo.getAttribute("aria-disabled") !== "true") abreRota(); }
+  else if ("fecha" in d) alvo.closest("dialog").close();
+});
+
+/* ============================================================
+   RELÓGIO
+   ============================================================ */
+/* Dois anéis como no símbolo da Viaestetic. O de fora tem 60 pontos (segundos
+   que restam no minuto); o de dentro, 24 (horas que restam no dia). */
+const ANEIS = [
+  { n: 60, raio: 268, min: 4.5, max: 10 },
+  { n: 24, raio: 205, min: 8, max: 15 },
+];
+function montaAnel(svg, idGrad) {
+  let i = 0;
+  const pontos = ANEIS.map((a, k) =>
+    Array.from({ length: a.n }, (_, j) => {
+      const ang = (j / a.n) * Math.PI * 2 - Math.PI / 2;
+      const x = 300 + a.raio * Math.cos(ang);
+      const y = 300 + a.raio * Math.sin(ang);
+      // Como no logo: pontos maiores nas laterais, menores em cima e embaixo.
+      const r = a.min + (a.max - a.min) * (0.5 + 0.5 * Math.cos(2 * ang));
+      return `<circle data-anel="${k}" style="--i:${i++}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="url(#${idGrad})"/>`;
+    }).join("")
+  ).join("");
+  svg.innerHTML = `<defs><linearGradient id="${idGrad}" gradientUnits="userSpaceOnUse" x1="30" y1="0" x2="570" y2="0"><stop offset="0" stop-color="#D151A9"/><stop offset=".35" stop-color="#8F7ABE"/><stop offset=".65" stop-color="#6187C7"/><stop offset="1" stop-color="#098ED1"/></linearGradient></defs>${pontos}`;
+  return ANEIS.map((_, k) => [...svg.querySelectorAll(`[data-anel="${k}"]`)]);
+}
+/** Acende os `quantos` primeiros pontos do anel (a partir do topo, sentido horário). */
+function acende(pontos, quantos, comPulso) {
+  pontos.forEach((c, j) => {
+    const apagar = j >= quantos;
+    if (comPulso && apagar && !c.classList.contains("off")) {
+      c.classList.remove("pulso");
+      void c.getBoundingClientRect();
+      c.classList.add("pulso");
+    }
+    c.classList.toggle("off", apagar);
+  });
+}
+
+const FIM = new Date(CONFIG.fim).getTime();
+const dois = (n) => String(n).padStart(2, "0");
+function partes(ms) {
+  const t = Math.max(0, Math.floor(ms / 1000));
+  return { d: Math.floor(t / 86400), h: Math.floor(t / 3600) % 24, m: Math.floor(t / 60) % 60, s: t % 60, total: t };
+}
+const compacto = (p) => `${p.d > 0 ? p.d + "d " : ""}${dois(p.h)}:${dois(p.m)}:${dois(p.s)}`;
+
+const [heroSeg, heroHora] = montaAnel($("anel-hero"), "grad-hero");
+const elDias = $("relogio-dias"), elHms = $("relogio-hms"), elSr = $("relogio-sr");
+const elsTempo = document.querySelectorAll("[data-tempo]");
+let ultimoSegundo = -1, encerrada = false;
+
+function encerra() {
+  encerrada = true;
+  document.body.classList.add("encerrada");
+  $("relogio-rotulo").textContent = "ViaBlack";
+  elDias.innerHTML = "Encerrada";
+  elDias.style.fontSize = "clamp(30px,9vw,44px)";
+  elHms.innerHTML = "00<i>:</i>00<i>:</i>00";
+  acende(heroSeg, 0);
+  acende(heroHora, 0);
+  $("hero-texto").innerHTML = "A edição 2026 da ViaBlack <strong>foi encerrada</strong>. Fale com um consultor para conhecer as condições atuais.";
+  $("hero-prazo").textContent = "";
+  $("final-titulo").textContent = "A ViaBlack 2026 foi encerrada.";
+  $("barra-rotulo").textContent = "ViaBlack";
+  elsTempo.forEach((e) => { e.textContent = "Encerrada"; });
+  elSr.textContent = "A ViaBlack 2026 foi encerrada.";
+}
+
+function atualiza() {
+  if (encerrada) return;
+  const p = partes(FIM - Date.now());
+  if (p.total === ultimoSegundo) return;
+  ultimoSegundo = p.total;
+  if (p.total <= 0) return encerra();
+  elDias.innerHTML = p.d > 0
+    ? `${p.d}<small>${p.d === 1 ? "dia" : "dias"}</small>`
+    : `<small style="margin:0 0 6px">últimas horas</small>`;
+  elHms.innerHTML = `${dois(p.h)}<i>:</i>${dois(p.m)}<i>:</i>${dois(p.s)}`;
+  acende(heroSeg, p.s, true);
+  acende(heroHora, p.h + (p.m || p.s ? 1 : 0));
+  const texto = compacto(p);
+  elsTempo.forEach((e) => { e.textContent = texto; });
+  // Para leitor de tela, uma vez por minuto basta.
+  if (p.s === 0 || !elSr.textContent) {
+    elSr.textContent = `Faltam ${p.d} dias, ${p.h} horas e ${p.m} minutos para o fim da ViaBlack.`;
+  }
+}
+
+const prazo = new Date(FIM);
+const fmt = (opcoes) => new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", ...opcoes }).format(prazo);
+$("hero-prazo").innerHTML =
+  `Válido até <b>${fmt({ day: "2-digit", month: "long" })}</b>, às <b>${fmt({ hour: "2-digit", minute: "2-digit" }).replace(":", "h")}</b> (horário de Brasília).`;
+
+/* ---------- Abertura ---------- */
+(function abertura() {
+  const el = $("abertura");
+  const semMovimento = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (semMovimento || FIM - Date.now() <= 0) return;
+
+  const [seg, hora] = montaAnel($("anel-abertura"), "grad-abertura");
+  const elTempo = $("abertura-tempo");
+  const html = document.documentElement;
+  el.hidden = false;
+  html.classList.add("travado");
+
+  // O relógio começa adiantado e "escorre" até o tempo que resta de verdade.
+  const SOBRA = ((3 * 24 + 7) * 3600 + 13 * 60 + 41) * 1000;
+  const INICIO = 450, CORRIDA = 2100, PAUSA = 950;
+  const suave = (x) => 1 - Math.pow(1 - x, 4);
+  const mostra = (ms) => {
+    const p = partes(ms);
+    elTempo.textContent = `${dois(p.d)}:${dois(p.h)}:${dois(p.m)}:${dois(p.s)}`;
+  };
+  let t0 = null, quadro = 0, fechada = false, relogioFinal = 0;
+
+  mostra(FIM - Date.now() + SOBRA);
+
+  function passo(agora) {
+    if (fechada) return;
+    if (t0 === null) t0 = agora;
+    const x = Math.min(1, Math.max(0, (agora - t0 - INICIO) / CORRIDA));
+    const e = suave(x);
+    const resta = FIM - Date.now();
+    const real = partes(resta);
+    mostra(resta + SOBRA * (1 - e));
+    // Os anéis dão voltas esvaziando e param no valor real (3 voltas e 1 volta).
+    const volta = (valor, n, voltas) => {
+      const r = Math.round(valor + (1 - e) * n * voltas);
+      return r > 0 && r % n === 0 ? n : r % n;
+    };
+    acende(seg, volta(real.s, 60, 3));
+    acende(hora, volta(real.h, 24, 1));
+    if (x < 1) { quadro = requestAnimationFrame(passo); return; }
+    // Chegou no tempo real: revela a marca e segue marcando os segundos.
+    el.classList.add("revela");
+    relogioFinal = setInterval(() => {
+      const r = partes(FIM - Date.now());
+      mostra(FIM - Date.now());
+      acende(seg, r.s, true);
+    }, 250);
+    setTimeout(fecha, PAUSA);
+  }
+
+  function fecha() {
+    if (fechada) return;
+    fechada = true;
+    cancelAnimationFrame(quadro);
+    if (!document.querySelector("dialog[open]")) html.classList.remove("travado");
+    el.classList.add("saindo");
+    setTimeout(() => { clearInterval(relogioFinal); el.remove(); }, 900);
+  }
+
+  $("pular").addEventListener("click", fecha);
+  el.addEventListener("click", (ev) => { if (ev.target === el) fecha(); });
+  document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") fecha(); });
+  quadro = requestAnimationFrame(passo);
+  // Se a aba estiver em segundo plano o rAF não roda: garante a saída.
+  setTimeout(fecha, INICIO + CORRIDA + PAUSA + 2500);
+})();
+
+/* ---------- Barra fixa e entrada ao rolar ---------- */
+const barra = $("barra");
+let passouDoTopo = false;
+function atualizaBarraVisivel() {
+  // Aparece depois do topo; com produto na seleção, fica sempre à mão.
+  barra.classList.toggle("visivel", passouDoTopo || selecao.size > 0);
+}
+new IntersectionObserver(([e]) => {
+  passouDoTopo = !e.isIntersecting && e.boundingClientRect.top < 0;
+  atualizaBarraVisivel();
+}).observe($("hero-acoes"));
+
+const olho = new IntersectionObserver((entradas) => {
+  entradas.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add("visto"); olho.unobserve(e.target); }
+  });
+}, { rootMargin: "0px 0px -8% 0px" });
+document.querySelectorAll(".revelar").forEach((e) => olho.observe(e));
+
+desenhaGrade();
+desenhaBarra();
+atualiza();
+setInterval(atualiza, 250);
+</script>
+</body>
+</html>
