@@ -439,13 +439,13 @@ dialog.painel[open]{display:flex;flex-direction:column;animation:sobe .28s ease}
 <script>
 const CONFIG = window.VIABLACK;
 const CATEGORIAS = window.VIABLACK_CATEGORIAS;
-const PRODUTOS = window.VIABLACK_PRODUTOS.map((p, i) => ({ ...p, k: p.id ? "p" + p.id : "n" + i }));
+const semAcento = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const PRODUTOS = window.VIABLACK_PRODUTOS.map((p) => ({ ...p, k: p.id ? "p" + p.id : "n" + semAcento(p.n).replace(/[^a-z0-9]+/g, "-") }));
 const POR_CHAVE = new Map(PRODUTOS.map((p) => [p.k, p]));
 const ROTULO_CAT = Object.fromEntries(CATEGORIAS.map((c) => [c.id, c.rotulo]));
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const semAcento = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 const foto = (p) => (p.f ? `img/produtos/${p.f}.webp` : `img/cat-${p.c}.webp`);
 
 /* Guarda no aparelho (seleção e vendedor escolhido). Sem armazenamento, a
