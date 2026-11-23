@@ -1,9 +1,9 @@
 /* Seleção da ViaBlack 2026 — gerada da TABELA BLACK NOVEMBRO 2026, SEM os valores.
    23/11/2026: só Rennova, Galderma e os itens da campanha Black (Letybo, Yvoire,
-   Neuramis, Cânula TSK e Lafullen).
+   Neuramis e Lafullen).
    n = nome, l = linha, c = categoria, id = código no catálogo do portal (vira a
    referência VIA-…), f = foto em img/produtos/. Sem f = imagem da categoria. */
-window.VIABLACK_CATEGORIAS = [{"id": "toxina-botulinica", "rotulo": "Toxinas"}, {"id": "preenchedores", "rotulo": "Preenchedores"}, {"id": "bioestimuladores", "rotulo": "Bioestimuladores"}, {"id": "acessorios-aplicacao", "rotulo": "Acessórios"}];
+window.VIABLACK_CATEGORIAS = [{"id": "toxina-botulinica", "rotulo": "Toxinas"}, {"id": "preenchedores", "rotulo": "Preenchedores"}, {"id": "bioestimuladores", "rotulo": "Bioestimuladores"}];
 window.VIABLACK_PRODUTOS = [
   {"n": "Nabota 100U - Material Cirúrgico", "l": "Rennova", "c": "toxina-botulinica", "id": 2718, "f": "toxinas"},
   {"n": "Rennova Fill", "l": "Rennova", "c": "preenchedores", "id": 2620, "f": "rennova-fill"},
@@ -52,6 +52,5 @@ window.VIABLACK_PRODUTOS = [
   {"n": "Yvoire Classic Plus", "l": "Dermadren", "c": "preenchedores", "id": 3026, "f": "yvoire-classic-plus"},
   {"n": "Yvoire Contour S", "l": "Dermadren", "c": "preenchedores", "id": 3027, "f": "yvoire-contour-s"},
   {"n": "Yvoire Volume Plus", "l": "Dermadren", "c": "preenchedores", "id": 3028, "f": "yvoire-volume-plus"},
-  {"n": "Lafullen 1 ml", "l": "Lafullen", "c": "preenchedores", "id": 3622, "f": "lafullen-1ml"},
-  {"n": "Cânula TSK", "l": "TSK", "c": "acessorios-aplicacao"}
+  {"n": "Lafullen 1 ml", "l": "Lafullen", "c": "preenchedores", "id": 3622, "f": "lafullen-1ml"}
 ];
