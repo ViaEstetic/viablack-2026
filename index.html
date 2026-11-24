@@ -289,6 +289,9 @@ dialog.painel[open]{display:flex;flex-direction:column;animation:sobe .28s ease}
    (Windows com animações desligadas, iPhone/Android com movimento reduzido):
    a abertura e as entradas fazem parte da campanha. */
 </style>
+<!-- Vercel Web Analytics: acessos (sem cookies). Só conta depois de ligado no painel do projeto. -->
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -446,6 +449,8 @@ const ROTULO_CAT = Object.fromEntries(CATEGORIAS.map((c) => [c.id, c.rotulo]));
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+/* Eventos para o Analytics da Vercel (no plano sem eventos, a Vercel só ignora). */
+const conta = (nome, dados) => { try { window.va("event", { name: nome, data: dados }); } catch { /* segue sem contar */ } };
 const foto = (p) => (p.f ? `img/produtos/${p.f}.webp` : `img/cat-${p.c}.webp`);
 
 /* Guarda no aparelho (seleção e vendedor escolhido). Sem armazenamento, a
@@ -685,6 +690,11 @@ function passoDestino(rota) {
   elRotaPe.innerHTML = `
     <a class="botao principal largo" id="abrir-zap" href="${esc(linkZap(rota))}" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#zap"/></svg>Abrir o WhatsApp</a>
     <p class="painel-nota">Você só envia a mensagem se quiser: ela abre pronta no WhatsApp.</p>`;
+  $("abrir-zap").addEventListener("click", () => conta("Abriu WhatsApp", {
+    atendimento: comVendedor ? "cliente com vendedor" : rota.cliente ? "cliente sem lembrar o vendedor" : "cliente novo",
+    vendedor: comVendedor ? v.nome : "consultor de novos",
+    itens: n,
+  }));
   $("abrir-zap").focus();
 }
 
@@ -728,6 +738,7 @@ document.addEventListener("click", (e) => {
   const alvo = e.target.closest("[data-soma],[data-tira],[data-remove],[data-abre],[data-fecha]");
   if (!alvo) return;
   const d = alvo.dataset;
+  if (d.soma && !selecao.has(d.soma)) conta("Adicionou produto", { produto: POR_CHAVE.get(d.soma)?.n });
   if (d.soma) mudaQuantidade(d.soma, 1);
   else if (d.tira) mudaQuantidade(d.tira, -1);
   else if (d.remove) mudaQuantidade(d.remove, -(selecao.get(d.remove) || 0));
